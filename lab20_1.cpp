@@ -20,21 +20,73 @@ string toUpperStr(string x){
     return y;
 }
 
-void importDataFromFile(){
+void importDataFromFile(string filename , vector<string> &names, vector<int> &scores , vector<char> &grade ){
+    
+    ifstream myfile (filename);
+    string line;
+    char format[] = "%[^:]:%d %d %d";
+    char namel[100];
+    int a,b,c;
 
+    while(getline ( myfile , line)){
+        const char * line2 = line.c_str();
+        sscanf(line2,format,namel,&a,&b,&c);
+        int sumscore = a + b + c;
+        names.push_back(namel);
+        scores.push_back(sumscore);
+        grade.push_back(score2grade(sumscore));
+
+    }
 }
 
-void getCommand(){
-
+void getCommand(string &command , string &key){
+    cout << "Please input your command: ";
+    cin >> command;
+    if(toUpperStr(command) == "NAME"||toUpperStr(command) == "GRADE"){
+        cin.ignore();
+        cin >> key;
+    }
+    
 }
 
-void searchName(){
-
+void searchName(vector<string> &names, vector<int> &scores , vector<char> &grade , string key){
+    int count = 0;
+for(unsigned int i = 0 ; i < names.size();i++ ){
+    
+    if( key == toUpperStr(names[i])){
+         
+        cout << "---------------------------------\n";
+        cout << names[i] << "'s score = "<< scores[i] << endl;
+        cout << names[i] << "'s grade = " << grade[i] << endl;
+        cout << "---------------------------------\n";
+        count ++;
+    }else if(i == names.size()-1 && count == 0){
+        cout << "---------------------------------\n";
+        cout << "Cannot found."<< endl;
+        cout << "---------------------------------\n";
+    }
+    }
+}
+void searchGrade(vector<string> &names, vector<int> &scores, vector<char> &grades, string key){
+    int count = 0;
+    cout << "---------------------------------\n";
+for(unsigned int i = 0 ; i < grades.size();i++ ){
+    
+    if( key[0] == grades[i]){
+         
+        
+        cout << names[i] << " ("<< scores[i] << ")" << endl;
+        
+        count ++;
+    }else if(i == names.size()-1 && count == 0){
+        
+        cout << "Cannot found."<< endl;
+        
+    }
+    }
+    cout << "---------------------------------\n";
 }
 
-void searchGrade(){
-
-}
 
 
 int main(){
